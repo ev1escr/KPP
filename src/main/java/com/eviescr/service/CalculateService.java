@@ -1,11 +1,19 @@
 package com.eviescr.service;
 
 import com.eviescr.dto.CalculateResultDto;
-import org.springframework.stereotype.Service;
 
-@Service
-public class CalculateService {
-    public CalculateResultDto getCalculation(Double num1, Double num2) {
-        return new CalculateResultDto(num1, num2);
-    }
+import java.util.List;
+
+public interface CalculateService {
+    CalculateResultDto getCalculation(Double num1, Double num2);
+
+    CalculateResultDto save(CalculateResultDto calculateResultDto);
+
+    CalculateResultDto update(CalculateResultDto calculateResultDto);
+
+    CalculateResultDto getById(Long id);
+
+    void deleteById(Long id);
+
+    List<CalculateResultDto> getAll();
 }

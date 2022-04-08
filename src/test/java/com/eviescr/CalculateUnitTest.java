@@ -2,7 +2,7 @@ package com.eviescr;
 
 //import com.eviescr.controller.CalculatorController;
 //import com.eviescr.dto.CalculateResultDto;
-//import com.eviescr.service.CalculateService;
+//import com.eviescr.service.impl.CalculateServiceImpl;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ package com.eviescr;
 //    private CalculatorController controller;
 //
 //    @Mock
-//    private CalculateService service;
+//    private CalculateServiceImpl service;
 //
 //    @Test
 //    public void Given_Num1AndNum2_When_CalculateSumAndMultiply_Then_ResultIsReturned() {
@@ -65,7 +65,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class CalculateUnitTest {
 
-    private final String ENDPOINT = "/calculate";
+    private final String ENDPOINT = "/calculation/calculate";
 
 
     @Autowired

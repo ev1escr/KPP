@@ -1,23 +1,11 @@
-package com.eviescr.dto;
+package com.eviescr.entity;
 
-import javax.validation.constraints.NotNull;
-
-public class CalculateResultDto {
-
-    @NotNull
+public class CalculateResult {
     private Long id;
-
-    @NotNull
     private Double num1;
-
-    @NotNull
     private Double num2;
 
-    public CalculateResultDto() {
-
-    }
-
-    public CalculateResultDto(Long id, Double num1, Double num2) {
+    public CalculateResult(Long id, Double num1, Double num2) {
         this.id = id;
         this.num1 = num1;
         this.num2 = num2;
@@ -25,14 +13,6 @@ public class CalculateResultDto {
 
     public Double getNum1() {
         return num1;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setNum1(Double num1) {
@@ -55,12 +35,21 @@ public class CalculateResultDto {
         return num1 * num2;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "CalculateResultDto{" +
+        return "CalculateResult{" +
                 "id=" + id +
                 ", num1=" + num1 +
                 ", num2=" + num2 +
                 '}';
     }
 }
+
