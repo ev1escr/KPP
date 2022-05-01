@@ -1,20 +1,16 @@
 package com.eviescr.dao;
 
-import com.eviescr.dto.CalculateResultDto;
-import com.eviescr.entity.CalculateResult;
-import com.eviescr.exception.NoSuchRecordException;
-
 import java.util.List;
 
-public interface CalculateResultDao<K, T> {
+public interface CalculateResultDao<K, V> {
 
-    K findByKey(T id);
+    V findByKey(K key);
 
-    List<K> findAll();
+    List<V> findAll();
 
-    K save(K k);
+    V save(K key, V value);
 
-    K deleteByKey(T t);
+    V deleteByKey(K key);
 
-    boolean existsByKey(T id);
+    boolean existsByKey(K key);
 }

@@ -1,11 +1,9 @@
-package com.eviescr.dto;
+package com.eviescr.entity;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
-public class CalculateResultDto {
-
-    @NotNull
-    private Long id;
+public class RequestParams {
 
     @NotNull
     private Double num1;
@@ -13,26 +11,13 @@ public class CalculateResultDto {
     @NotNull
     private Double num2;
 
-    public CalculateResultDto() {
-
-    }
-
-    public CalculateResultDto(Long id, Double num1, Double num2) {
-        this.id = id;
+    public RequestParams(Double num1, Double num2) {
         this.num1 = num1;
         this.num2 = num2;
     }
 
     public Double getNum1() {
         return num1;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setNum1(Double num1) {
@@ -47,19 +32,22 @@ public class CalculateResultDto {
         this.num2 = num2;
     }
 
-    public Double getSum() {
-        return num1 + num2;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RequestParams that = (RequestParams) o;
+        return num1.equals(that.num1) && num2.equals(that.num2);
     }
 
-    public Double getMultiply() {
-        return num1 * num2;
+    @Override
+    public int hashCode() {
+        return Objects.hash(num1, num2);
     }
 
     @Override
     public String toString() {
-        return "CalculateResultDto{" +
-                "id=" + id +
-                ", num1=" + num1 +
+        return "{num1=" + num1 +
                 ", num2=" + num2 +
                 '}';
     }

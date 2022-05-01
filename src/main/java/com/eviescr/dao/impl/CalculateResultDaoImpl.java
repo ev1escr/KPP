@@ -1,21 +1,22 @@
 package com.eviescr.dao.impl;
 
 import com.eviescr.dao.CalculateResultDao;
-import com.eviescr.exception.NoSuchRecordException;
-import com.eviescr.dto.CalculateResultDto;
 import com.eviescr.entity.CalculateResult;
+import com.eviescr.entity.RequestParams;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
-public class CalculateResultDaoImpl implements CalculateResultDao<CalculateResult, Long> {
+public class CalculateResultDaoImpl implements CalculateResultDao<RequestParams, CalculateResult> {
 
-    private final Map<Long, CalculateResult> calculateResults = new LinkedHashMap<>();
+    private final Map<RequestParams, CalculateResult> calculateResults = new LinkedHashMap<>();
 
     @Override
-    public CalculateResult findByKey(Long key) {
+    public CalculateResult findByKey(RequestParams key) {
         return calculateResults.get(key);
     }
 
@@ -25,18 +26,18 @@ public class CalculateResultDaoImpl implements CalculateResultDao<CalculateResul
     }
 
     @Override
-    public CalculateResult save(CalculateResult calculateResult) {
-        calculateResults.put(calculateResult.getId(), calculateResult);
+    public CalculateResult save(RequestParams requestParams, CalculateResult calculateResult) {
+        calculateResults.put(requestParams, calculateResult);
         return calculateResult;
     }
 
     @Override
-    public CalculateResult deleteByKey(Long key) {
-        return calculateResults.remove(key);
+    public CalculateResult deleteByKey(RequestParams requestParams) {
+        return calculateResults.remove(requestParams);
     }
 
     @Override
-    public boolean existsByKey(Long key) {
-        return calculateResults.containsKey(key);
+    public boolean existsByKey(RequestParams requestParams) {
+        return calculateResults.containsKey(requestParams);
     }
 }
