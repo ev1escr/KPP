@@ -16,4 +16,6 @@ public interface CalculateService {
     void deleteById(Long id);
 
     List<CalculateResultDto> getAll();
+
+    List<CalculateResultDto> saveAll(List<CalculateResultDto> calculateResultDtos);
 }

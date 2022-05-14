@@ -63,7 +63,18 @@ public class CalculateServiceImpl implements CalculateService {
 
     @Override
     public List<CalculateResultDto> getAll() {
-        return calculateResultDao.findAll().stream()
+        return calculateResultDao.findAll().parallelStream()
+                .map(converter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CalculateResultDto> saveAll(List<CalculateResultDto> calculateResultDtos) {
+        List<CalculateResult> calculateResultList = calculateResultDtos.parallelStream()
+                .map(converter::toEntity)
+                .peek(calculateResultDao::save)
+                .collect(Collectors.toList());
+        return calculateResultList.stream()
                 .map(converter::toDto)
                 .collect(Collectors.toList());
     }

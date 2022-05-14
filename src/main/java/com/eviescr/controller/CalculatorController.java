@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 @RestController
@@ -91,7 +89,13 @@ public class CalculatorController {
 
     @GetMapping("/count")
     @ResponseStatus(HttpStatus.OK)
-    public int getCountry() {
+    public int getCount() {
         return countingService.getCount();
+    }
+
+    @PostMapping("/list")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<CalculateResultDto> saveAllCalculations(@RequestBody List<CalculateResultDto> calculateResultDtos) {
+        return service.saveAll(calculateResultDtos);
     }
 }
