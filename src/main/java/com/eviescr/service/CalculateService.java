@@ -1,6 +1,7 @@
 package com.eviescr.service;
 
 import com.eviescr.dto.CalculateResultDto;
+import com.eviescr.dto.CalculateResultListDto;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface CalculateService {
 
     List<CalculateResultDto> getAll();
 
-    List<CalculateResultDto> saveAll(List<CalculateResultDto> calculateResultDtos);
+    CalculateResultListDto saveAll(List<CalculateResultDto> calculateResultDtos);
 }

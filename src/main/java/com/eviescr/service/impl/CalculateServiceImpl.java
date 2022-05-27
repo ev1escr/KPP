@@ -3,12 +3,14 @@ package com.eviescr.service.impl;
 import com.eviescr.converter.CalculateResultConverter;
 import com.eviescr.dao.impl.CalculateResultDaoImpl;
 import com.eviescr.dto.CalculateResultDto;
+import com.eviescr.dto.CalculateResultListDto;
 import com.eviescr.entity.CalculateResult;
 import com.eviescr.exception.DuplicateRecordException;
 import com.eviescr.exception.NoSuchRecordException;
 import com.eviescr.service.CalculateService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,13 +71,24 @@ public class CalculateServiceImpl implements CalculateService {
     }
 
     @Override
-    public List<CalculateResultDto> saveAll(List<CalculateResultDto> calculateResultDtos) {
-        List<CalculateResult> calculateResultList = calculateResultDtos.parallelStream()
+    public CalculateResultListDto saveAll(List<CalculateResultDto> calculateResultDtos) {
+        CalculateResultListDto calculateResultListDto = new CalculateResultListDto();
+        List<CalculateResultDto> calculateResultDtoList = calculateResultDtos.parallelStream()
                 .map(converter::toEntity)
                 .peek(calculateResultDao::save)
-                .collect(Collectors.toList());
-        return calculateResultList.stream()
+                .collect(Collectors.toList()).stream()
                 .map(converter::toDto)
                 .collect(Collectors.toList());
+        calculateResultListDto.setCalculateResultDtoList(calculateResultDtoList);
+        CalculateResultDto min = calculateResultDtoList.stream().min(Comparator.comparingDouble(CalculateResultDto::getSum))
+                .orElseThrow(() -> new NoSuchRecordException("There is nothing to compare"));
+        CalculateResultDto max = calculateResultDtoList.stream().max(Comparator.comparingDouble(CalculateResultDto::getSum))
+                .orElseThrow(() -> new NoSuchRecordException("There is nothing to compare"));
+        Double avg = calculateResultDtoList.stream().mapToDouble(CalculateResultDto::getSum).sum() /
+                ((long) calculateResultDtoList.size() * 2);
+        calculateResultListDto.setAvg(avg);
+        calculateResultListDto.setMinSum(min);
+        calculateResultListDto.setMaxSum(max);
+        return calculateResultListDto;
     }
 }

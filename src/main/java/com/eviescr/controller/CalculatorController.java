@@ -1,6 +1,7 @@
 package com.eviescr.controller;
 
 import com.eviescr.dto.CalculateResultDto;
+import com.eviescr.dto.CalculateResultListDto;
 import com.eviescr.service.CalculateService;
 import com.eviescr.service.CountingService;
 import com.eviescr.service.impl.CalculateServiceImpl;
@@ -95,7 +96,7 @@ public class CalculatorController {
 
     @PostMapping("/list")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<CalculateResultDto> saveAllCalculations(@RequestBody List<CalculateResultDto> calculateResultDtos) {
+    public CalculateResultListDto saveAllCalculations(@RequestBody List<CalculateResultDto> calculateResultDtos) {
         return service.saveAll(calculateResultDtos);
     }
 }
