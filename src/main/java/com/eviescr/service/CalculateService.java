@@ -1,22 +1,16 @@
 package com.eviescr.service;
 
-import com.eviescr.dto.CalculateResultDto;
-import com.eviescr.dto.CalculateResultListDto;
+import com.eviescr.entity.RequestParams;
+import com.eviescr.entity.CalculateResult;
 
 import java.util.List;
 
 public interface CalculateService {
-    CalculateResultDto getCalculation(Double num1, Double num2);
+    CalculateResult getCalculation(RequestParams requestParams);
 
-    CalculateResultDto save(CalculateResultDto calculateResultDto);
+    CalculateResult getByRequestParams(RequestParams id);
 
-    CalculateResultDto update(CalculateResultDto calculateResultDto);
+    void deleteByRequestParams(RequestParams id);
 
-    CalculateResultDto getById(Long id);
-
-    void deleteById(Long id);
-
-    List<CalculateResultDto> getAll();
-
-    CalculateResultListDto saveAll(List<CalculateResultDto> calculateResultDtos);
+    List<CalculateResult> getAll();
 }

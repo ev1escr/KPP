@@ -1,46 +1,5 @@
 package com.eviescr;
 
-//import com.eviescr.controller.CalculatorController;
-//import com.eviescr.dto.CalculateResultDto;
-//import com.eviescr.service.impl.CalculateServiceImpl;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class CalculateUnitTest {
-//
-//    @InjectMocks
-//    private CalculatorController controller;
-//
-//    @Mock
-//    private CalculateServiceImpl service;
-//
-//    @Test
-//    public void Given_Num1AndNum2_When_CalculateSumAndMultiply_Then_ResultIsReturned() {
-//        Double num1 = 4D;
-//        Double num2 = 3D;
-//        CalculateResultDto calculateDto = new CalculateResultDto(num1, num2);
-//        double actualSum = calculateDto.getSum();
-//        double actualMultiply = calculateDto.getMultiply();
-//
-//        assertEquals(service.getCalculation(num1, num2).getMultiply(), actualMultiply);
-//        assertEquals(service.getCalculation(num1, num2).getSum(), actualSum);
-//    }
-//
-//    @Test
-//    public void shouldReturnBadRequest() {
-//        double num1 = 4D;
-//        String num2 = "zxc23";
-//
-//
-//    }
-//
-//}
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CalculateUnitTest {
 
     private final String ENDPOINT = "/calculation/calculate";
-
 
     @Autowired
     private WebApplicationContext applicationContext;
@@ -95,9 +53,7 @@ public class CalculateUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sum").value(9))
-                .andExpect(jsonPath("$.multiply").value(20))
-                .andExpect(jsonPath("$.num1").value(4))
-                .andExpect(jsonPath("$.num2").value(5));
+                .andExpect(jsonPath("$.multiply").value(20));
     }
 
     @Test
@@ -122,6 +78,5 @@ public class CalculateUnitTest {
                 .andExpect(jsonPath("$.message").value("Required request parameter 'num1' " +
                         "for method parameter type Double is not present"));
     }
-
 }
 

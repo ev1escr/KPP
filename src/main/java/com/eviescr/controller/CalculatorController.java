@@ -1,18 +1,21 @@
 package com.eviescr.controller;
 
-import com.eviescr.dto.CalculateResultDto;
-import com.eviescr.dto.CalculateResultListDto;
+import com.eviescr.entity.CalculateResult;
+import com.eviescr.entity.RequestParams;
+import com.eviescr.entity.ResultDto;
+import com.eviescr.exception.NoSuchRecordException;
 import com.eviescr.service.CalculateService;
 import com.eviescr.service.CountingService;
 import com.eviescr.service.impl.CalculateServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/calculation")
@@ -30,73 +33,49 @@ public class CalculatorController {
 
     @GetMapping("/calculate")
     @ResponseStatus(HttpStatus.OK)
-    public CalculateResultDto getCalculation(@RequestParam("num1") Double num1,
-                                             @RequestParam("num2") Double num2) {
+    public CalculateResult getCalculation(@RequestParam("num1") Double num1,
+                                          @RequestParam("num2") Double num2) {
         logger.info("Class: Calculator; Method: getCalculation; params: " + num1 + ", " + num2 + ";");
         synchronized (countingService) {
             countingService.increment();
         }
-        return service.getCalculation(num1, num2);
+        return service.getCalculation(new RequestParams(num1, num2));
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CalculateResultDto saveCalculation(@RequestBody @Valid CalculateResultDto calculateResultDto) {
-        logger.info("Class: Calculator; Method: saveCalculation; RequestBody: " + calculateResultDto);
-        synchronized (countingService) {
-            countingService.increment();
-        }
-        return service.save(calculateResultDto);
-    }
-
-    @GetMapping
+    @PostMapping("/calculate")
     @ResponseStatus(HttpStatus.OK)
-    public List<CalculateResultDto> getAllCalculations() {
-        logger.info("Class: Calculator; Method: getAllCalculations;");
-        synchronized (countingService) {
-            countingService.increment();
+    public ResponseEntity<?> binaryBulkParams(@Valid @RequestBody List<RequestParams> bodyList) {
+        ResultDto dto = new ResultDto();
+        if (bodyList.isEmpty()) {
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         }
+        List<CalculateResult> resultList = new LinkedList<>();
+        bodyList.forEach((currentElement) -> {
+            resultList.add(service.getCalculation(currentElement));
+        });
+        dto.setList(resultList);
+        logger.info("Successfully postMapping");
+        dto.setMinSum(resultList.stream().mapToDouble(CalculateResult::getSum).min()
+                .orElseThrow(() -> new NoSuchRecordException("There is nothing to compare")));
+        dto.setMaxSum(resultList.stream().mapToDouble(CalculateResult::getSum).max()
+                .orElseThrow(() -> new NoSuchRecordException("There is nothing to compare")));
+        dto.setAvrSum(resultList.stream().mapToDouble(CalculateResult::getSum).average()
+                .orElseThrow(() -> new NoSuchRecordException("There is nothing to compare")));
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("/cache")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CalculateResult> getAllCalculations() {
+        logger.info("Class: Calculator; Method: getAllCalculations;");
         return service.getAll();
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public CalculateResultDto updateCalculation(@RequestBody @Valid CalculateResultDto calculateResultDto) {
-        logger.info("Class: Calculator; Method: updateCalculation; RequestBody: " + calculateResultDto);
+    @GetMapping(value = "/counter")
+    public String getCounter() {
         synchronized (countingService) {
-            countingService.increment();
+            return countingService.getCount() + " requests were sent";
         }
-        return service.update(calculateResultDto);
-    }
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CalculateResultDto getCalculationById(@PathVariable("id") Long id) {
-        logger.info("Class: Calculator; Method: getCalculationByid; PathVariable: " + id);
-        synchronized (countingService) {
-            countingService.increment();
-        }
-        return service.getById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable("id") Long id) {
-        synchronized (countingService) {
-            countingService.increment();
-        }
-        service.deleteById(id);
-    }
-
-    @GetMapping("/count")
-    @ResponseStatus(HttpStatus.OK)
-    public int getCount() {
-        return countingService.getCount();
-    }
-
-    @PostMapping("/list")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CalculateResultListDto saveAllCalculations(@RequestBody List<CalculateResultDto> calculateResultDtos) {
-        return service.saveAll(calculateResultDtos);
     }
 }

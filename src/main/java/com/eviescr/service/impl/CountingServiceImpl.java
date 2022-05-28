@@ -3,12 +3,10 @@ package com.eviescr.service.impl;
 import com.eviescr.service.CountingService;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Service
 public class CountingServiceImpl implements CountingService {
 
-    private Integer count = 0;
+    private int count;
 
     @Override
     public int getCount() {

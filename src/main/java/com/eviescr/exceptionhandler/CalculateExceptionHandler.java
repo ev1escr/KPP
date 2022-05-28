@@ -17,7 +17,7 @@ public class CalculateExceptionHandler {
     private static final Logger logger = LogManager.getLogger(CalculateExceptionHandler.class);
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<?> handlerBadRequestException(MissingServletRequestParameterException e) {
+    public ResponseEntity<?> handleBadRequestException(MissingServletRequestParameterException e) {
         ExceptionInfo error = new ExceptionInfo(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 
         logger.info("MissingServletRequestParameterException");
@@ -25,7 +25,7 @@ public class CalculateExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<?> handlerBadRequestException(MethodArgumentTypeMismatchException e) {
+    public ResponseEntity<?> handleBadRequestException(MethodArgumentTypeMismatchException e) {
         ExceptionInfo error = new ExceptionInfo(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 
         logger.info("MethodArgumentTypeMismatchException");
@@ -47,6 +47,5 @@ public class CalculateExceptionHandler {
         logger.info("NoSuchRecordException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-
 
 }
