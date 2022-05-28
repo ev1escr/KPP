@@ -11,6 +11,9 @@ public class RequestParams {
     @NotNull
     private Double num2;
 
+    public RequestParams() {
+    }
+
     public RequestParams(Double num1, Double num2) {
         this.num1 = num1;
         this.num2 = num2;
@@ -47,8 +50,6 @@ public class RequestParams {
 
     @Override
     public String toString() {
-        return "{num1=" + num1 +
-                ", num2=" + num2 +
-                '}';
+        return "{num1=" + num1 + ", num2=" + num2 + '}';
     }
 }
